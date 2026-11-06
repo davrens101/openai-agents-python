@@ -26,7 +26,7 @@ def get_sentence_based_splitter(
         Returns:
             A tuple of the text to process and the remaining text buffer.
         """
-        sentences = re.split(r"(?<=[.!?])\s+", text_buffer.strip())
+        sentences = re.split(r"(?<=[.!?])\s+|(?<=[。！？])\s*", text_buffer.strip())
         if len(sentences) >= 1:
             combined_sentences = " ".join(sentences[:-1])
             if len(combined_sentences) >= min_sentence_length:
