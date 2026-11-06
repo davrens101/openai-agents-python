@@ -69,3 +69,17 @@ def test_split_without_trailing_whitespace_is_unchanged() -> None:
         "This sentence is long enough to flush.",
         "He",
     )
+
+
+def test_split_flushes_cjk_text_at_sentence_boundaries() -> None:
+    """CJK transcripts must be sentence-split too, or they never flush for TTS.
+
+    CJK text has no inter-character spaces, so the ASCII-only split pattern never fired
+    and the buffer held the whole transcript without ever producing speech content.
+    """
+    split = get_sentence_based_splitter(20)
+
+    spoken, remaining = split("这是一个很长的中文句子用来测试分块功能。这是第二个中文句子内容。")
+
+    assert spoken.strip()
+    assert remaining == ""
